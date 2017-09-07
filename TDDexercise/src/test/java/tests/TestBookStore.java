@@ -16,7 +16,6 @@ public class TestBookStore {
 	BookService testBookService = new BookService();
 	Book testBook;
 	Map<Integer, Book> testMap;
-	Integer id;
 	
 	@Test
 	public void testGetAuthor() {
@@ -46,28 +45,26 @@ public class TestBookStore {
 	@Test
 	public void testInitBooks() {
 		testBookService.initBookStore();
-		assertNotNull("Map not initialised", bookMap);
-		assertEquals("Book 1 not added", bookMap.get(1).getAuthor(), "James Herbert");
-		assertEquals("Book 2 not added", bookMap.get(2).getAuthor(), "Jim Bert");
+		assertNotNull("Map not initialised", testBookService.bookMap);
+		assertEquals("Book 1 not added", testBookService.bookMap.get(1).getAuthor(), "James Herbert");
+		assertEquals("Book 2 not added", testBookService.bookMap.get(2).getAuthor(), "Jim Bert");
 	}
 	
 	@Test
 	public void testAddBook() {
-		this.testMap = new HashMap<Integer, Book>();
-		this.id = 2;
+		testBookService.id=7;
 		testBookService.addBook("testAddAuthor", "testAddTitle", "testAddGenre", "testAddYear");
-		assertNotNull("ID not changed", testMap.get(id).getTitle());
-		assertEquals("Book not added", testMap.get(id).getTitle(), "testAddTitle");
+		assertNotNull("ID not changed", testBookService.bookMap.get(testBookService.id).getGenre());
+		assertEquals("Book not added", testBookService.bookMap.get(testBookService.id).getTitle(), "testAddTitle");
 	}
 	
 	@Test
-	public void testSearchGenre() {
+	public void testCountGenre() {
 		testBookService.initBookStore();
-		testBookService.addBook("H. P. Lovecraft", "Call of Cthulu", "Horror, 1928");
-		testBookService.addBook("Nicholas Sparks", "The Notebook", "Romance, 1996");
-		Book[] horrorBooks = testBookService.searchGenre("Horror");
-		assertEquals("Horror book 1 not found", horrorBooks[0].getAuthor(), "James Herbert");
-		assertEquals("Horror book 2 not found", horrorBooks[1].getTitle(), "Call of Cthulu");
+		testBookService.addBook("H. P. Lovecraft", "Call of Cthulu", "Horror", "1928");
+		testBookService.addBook("Nicholas Sparks", "The Notebook", "Romance", "1996");
+		int count = testBookService.countGenre("Horror");
+		assertEquals("Horror books count is incorrect", count, 2);
 	}
 	
 }
